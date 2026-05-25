@@ -1,0 +1,16 @@
+REPORTE DE VALIDACIÓN DE DATOS
+==============================
+
+1. Valores faltantes por columna:
+   - nombre: 0 valores faltantes
+   - nota1: 1 valores faltantes
+   - nota2: 1 valores faltantes
+   - nota3: 1 valores faltantes
+   - asistencia: 2 valores faltantes
+
+2. Detalle de filas con valores faltantes:
+   - Fila 2: Estudiante Luis
+   - Fila 3: Estudiante Carla
+   - Fila 4: Estudiante Diego
+   - Fila 6: Estudiante Rodrigo
+   - Fila 8: Estudiante Matias

@@ -1,11 +1,13 @@
 from datetime import datetime
 import os
+
 import pandas as pd
 
 
-def generar_reporte(
-    csv_path: str, resumen_path: str, output_md: str
-) -> None:
+def generar_reporte(csv_path: str, resumen_path: str, output_md: str) -> None:
+    """
+    Genera un reporte en formato Markdown con el resumen estadístico del curso, el detalle de cada alumno y observaciones sobre los datos imputados.
+    """
     os.makedirs(os.path.dirname(output_md), exist_ok=True)
 
     df = pd.read_csv(csv_path)
@@ -18,9 +20,7 @@ def generar_reporte(
 
     with open(output_md, "w", encoding="utf-8") as f:
         f.write("# Reporte Final de Rendimiento Academico\n\n")
-        f.write(
-            f"**Fecha de generacion:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n"
-        )
+        f.write(f"**Fecha de generacion:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
 
         f.write("## 1. Resumen Estadistico del Curso\n")
         f.write("```text\n")
@@ -28,12 +28,8 @@ def generar_reporte(
         f.write("```\n\n")
 
         f.write("## 2. Detalle de Alumnos y Calificaciones\n")
-        f.write(
-            "| nombre | nota1 | nota2 | nota3 | asistencia | promedio | categoria |\n"
-        )
-        f.write(
-            "| :--- | :---: | :---: | :---: | :---: | :---: | :--- |\n"
-        )
+        f.write("| nombre | nota1 | nota2 | nota3 | asistencia | promedio | categoria |\n")
+        f.write("| :--- | :---: | :---: | :---: | :---: | :---: | :--- |\n")
 
         for idx, row in df.iterrows():
             f.write(

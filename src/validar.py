@@ -1,8 +1,12 @@
 import os
+
 import pandas as pd
 
 
 def validar_datos(input_path: str, output_csv: str, output_txt: str) -> None:
+    """
+    Valida el dataset de estudiantes.csv detectando valores faltantes y guardando un reporte detallado de la validación.
+    """
     os.makedirs(os.path.dirname(output_csv), exist_ok=True)
     os.makedirs(os.path.dirname(output_txt), exist_ok=True)
 

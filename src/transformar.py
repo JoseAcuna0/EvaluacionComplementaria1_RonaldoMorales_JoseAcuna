@@ -1,8 +1,12 @@
 import os
+
 import pandas as pd
 
 
 def transformar_datos(input_path: str, output_path: str) -> None:
+    """
+    Transforma los datos del dataset imputado.csv calculando el promedio de las notas, asignando la categoria de cada alumno y guardando el resultado en transformado.csv.
+    """
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     df = pd.read_csv(input_path)
 
@@ -24,6 +28,4 @@ def transformar_datos(input_path: str, output_path: str) -> None:
 
 
 if __name__ == "__main__":
-    transformar_datos(
-        "data/interim/imputado.csv", "data/processed/transformado.csv"
-    )
+    transformar_datos("data/interim/imputado.csv", "data/processed/transformado.csv")

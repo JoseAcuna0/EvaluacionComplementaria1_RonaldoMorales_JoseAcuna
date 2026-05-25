@@ -1,0 +1,9 @@
+nombre,nota1,nota2,nota3,asistencia,tiene_faltantes,promedio,aprobado,categoria
+Ana,6.5,5.8,7.0,92,False,6.43,True,Destacado
+Luis,4.2,5.8,5.1,78,True,5.03,True,Aprobado
+Carla,6.0,6.8,6.5,81,True,6.43,True,Destacado
+Diego,5.5,4.0,3.8,65,True,4.43,True,Aprobado
+Valentina,7.0,6.9,6.7,95,False,6.87,True,Destacado
+Rodrigo,4.5,3.8,5.9,70,True,4.73,True,Aprobado
+Isidora,2.0,6.2,5.9,88,False,4.7,True,Aprobado
+Matias,5.5,5.0,5.8,81,True,5.43,True,Aprobado

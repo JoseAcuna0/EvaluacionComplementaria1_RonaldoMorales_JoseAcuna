@@ -1,8 +1,12 @@
 import os
+
 import pandas as pd
 
 
 def resumir_datos(input_path: str, output_txt: str) -> None:
+    """
+    Calcula y guarda un resumen estadístico del curso en un archivo de texto.
+    """
     os.makedirs(os.path.dirname(output_txt), exist_ok=True)
     df = pd.read_csv(input_path)
 

@@ -1,0 +1,9 @@
+nombre,nota1,nota2,nota3,asistencia,tiene_faltantes
+Ana,6.5,5.8,7.0,92.0,False
+Luis,4.2,,5.1,78.0,True
+Carla,6.0,6.8,6.5,,True
+Diego,,4.0,3.8,65.0,True
+Valentina,7.0,6.9,6.7,95.0,False
+Rodrigo,4.5,3.8,,70.0,True
+Isidora,2.0,6.2,5.9,88.0,False
+Matias,5.5,5.0,5.8,,True

@@ -1,0 +1,10 @@
+Total de estudiantes procesados: 8
+Promedio general del curso: 5.51
+Nota minima individual: 2.0
+Nota maxima individual: 7.0
+Porcentaje de estudiantes aprobados: 100.0%
+Conteo por categoria:
+  - Destacado: 3
+  - Aprobado: 5
+  - Reprobado: 0
+Promedio de asistencia del curso: 81.25%
