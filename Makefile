@@ -2,67 +2,126 @@
 # GLOBALS                                                                       #
 #################################################################################
 
-PROJECT_NAME = evaluacionComplementaria1_pc
+PROJECT_NAME = ec1
 PYTHON_VERSION = 3.11
 PYTHON_INTERPRETER = python
+
+#################################################################################
+# VARIABLES                                                                     #
+#################################################################################
+
+PYTHON = python
+
+SCRIPT_VALIDATE     = src\validar.py
+SCRIPT_IMPUTE       = src\imputar.py
+SCRIPT_TRANSFORM    = src\transformar.py
+SCRIPT_SUMMARIZE    = src\resumir.py
+SCRIPT_REPORT       = src\reporte.py
+
+RAW_DATA            = data\raw\estudiantes.csv
+VALIDATED_CSV       = data\interim\validado.csv
+VALIDATION_TXT      = data\interim\reporte_validacion.txt
+IMPUTED_CSV         = data\interim\imputado.csv
+TRANSFORMED_CSV     = data\processed\transformado.csv
+SUMMARY_TXT         = data\processed\resumen.txt
+FINAL_REPORT        = reports\reporte_final.md
+
+#################################################################################
+# Default Target                                                                #
+#################################################################################
+
+.DEFAULT_GOAL := all
 
 #################################################################################
 # COMMANDS                                                                      #
 #################################################################################
 
+.PHONY: all
+all: lint $(FINAL_REPORT)
 
-## Install Python dependencies
-.PHONY: requirements
-requirements:
-	conda env update --name $(PROJECT_NAME) --file environment.yml --prune
-	
+#################################################################################
+# CODE QUALITY                                                                  #
+#################################################################################
 
-
-
-## Delete all compiled Python files
-.PHONY: clean
-clean:
-	find . -type f -name "*.py[co]" -delete
-	find . -type d -name "__pycache__" -delete
-
-
-## Lint using ruff (use `make format` to do formatting)
 .PHONY: lint
 lint:
-	ruff format --check
-	ruff check
+	ruff format --check src
+	ruff check src
 
-## Format source code with ruff
 .PHONY: format
 format:
-	ruff check --fix
-	ruff format
-
-
-
-
-
-## Set up Python interpreter environment
-.PHONY: create_environment
-create_environment:
-	conda env create --name $(PROJECT_NAME) -f environment.yml
-	
-	@echo ">>> conda env created. Activate with:\nconda activate $(PROJECT_NAME)"
-	
-
-
+	ruff check --fix src
+	ruff format src
 
 #################################################################################
 # PROJECT RULES                                                                 #
 #################################################################################
 
+#################################################################################
+# PIPELINE                                                                      #
+#################################################################################
 
+$(VALIDATED_CSV) $(VALIDATION_TXT): $(RAW_DATA)	$(SCRIPT_VALIDATE)
+	$(PYTHON) $(SCRIPT_VALIDATE)
+
+$(IMPUTED_CSV): $(VALIDATED_CSV) $(SCRIPT_IMPUTE)
+	$(PYTHON) $(SCRIPT_IMPUTE)
+
+$(TRANSFORMED_CSV): $(IMPUTED_CSV) $(SCRIPT_TRANSFORM)
+	$(PYTHON) $(SCRIPT_TRANSFORM)
+
+$(SUMMARY_TXT): $(TRANSFORMED_CSV) $(SCRIPT_SUMMARIZE)
+	$(PYTHON) $(SCRIPT_SUMMARIZE)
+
+$(FINAL_REPORT): $(TRANSFORMED_CSV) $(SUMMARY_TXT) $(SCRIPT_REPORT)
+	$(PYTHON) $(SCRIPT_REPORT)
+
+################################################################################
+# MAINTENANCE                                                                   #
+################################################################################
+
+.PHONY: clean
+clean:
+	-@if exist $(VALIDATED_CSV) del /f /q $(VALIDATED_CSV)
+	-@if exist $(VALIDATION_TXT) del /f /q $(VALIDATION_TXT)
+	-@if exist $(IMPUTED_CSV) del /f /q $(IMPUTED_CSV)
+	-@if exist $(TRANSFORMED_CSV) del /f /q $(TRANSFORMED_CSV)
+	-@if exist $(SUMMARY_TXT) del /f /q $(SUMMARY_TXT)
+	-@if exist $(FINAL_REPORT) del /f /q $(FINAL_REPORT)
+
+	-@del /s /q *.pyc >nul 2>&1
+	-@del /s /q *.pyo >nul 2>&1
+	-@for /d /r . %%d in (__pycache__) do @if exist "%%d" rd /s /q "%%d" >nul 2>&1
+
+	@echo "Archivos borrados"
+
+.PHONY: status
+status:
+	@echo  ------ ESTADO DE PIPELINE ------
+	@if exist $(RAW_DATA) (echo [OK] $(RAW_DATA)) else (echo [Faltante] $(RAW_DATA))
+	@if exist $(VALIDATED_CSV) (echo [OK] $(VALIDATED_CSV)) else (echo [Faltante] $(VALIDATED_CSV))
+	@if exist $(VALIDATION_TXT) (echo [OK] $(VALIDATION_TXT)) else (echo [Faltante] $(VALIDATION_TXT))
+	@if exist $(IMPUTED_CSV) (echo [OK] $(IMPUTED_CSV)) else (echo [Faltante] $(IMPUTED_CSV))
+	@if exist $(TRANSFORMED_CSV) (echo [OK] $(TRANSFORMED_CSV)) else (echo [Faltante] $(TRANSFORMED_CSV))
+	@if exist $(SUMMARY_TXT) (echo [OK] $(SUMMARY_TXT)) else (echo [Faltante] $(SUMMARY_TXT))
+	@if exist $(FINAL_REPORT) (echo [OK] $(FINAL_REPORT)) else (echo [Faltante] $(FINAL_REPORT))
+
+#################################################################################
+# Environment                                                                   #
+#################################################################################
+
+.PHONY: create_environment
+create_environment:
+	conda env create --name $(PROJECT_NAME) -f environment.yml
+	@echo ">>> conda env created. Activate with:\nconda activate $(PROJECT_NAME)"
+
+.PHONY: requirements
+requirements:
+	conda env update --name $(PROJECT_NAME) --file environment.yml --prune
 
 #################################################################################
 # Self Documenting Commands                                                     #
 #################################################################################
-
-.DEFAULT_GOAL := help
 
 define PRINT_HELP_PYSCRIPT
 import re, sys; \
